@@ -1,38 +1,43 @@
 # Operation
 type Query {
   helloworld: String
-  users: [User]
-  user(userInput: UserConfig!): User
+  users: [User]!
+  user(id: Int!): User
 }
 
 type Mutation {
   createUser(userInput: UserInput!): CreateUserPayload
-  # updateUser(userInput: UserInput): User
-  # deleteUser(userConfig: UserConfig): User
+  updateUser(userInput: UserInput!): UpdateUserPayload
+  # deleteUser(userConfig: UserConfig): DeleteUserPayload
 }
 
 # Data Schema
 type User {
-  id: Int
-  name: String
-  age: Int
+  id: Int!
+  name: String!
+  age: Int!
 }
 
 # Payload Definition
 union CreateUserPayload = CreateUserSuccess | ValidationError
+union UpdateUserPayload = UpdateUserSuccess | ValidationError
+union DeleteUserPayload = DeleteUserSuccess | ValidationError
 
 # Return State Definition
 type CreateUserSuccess {
   user: User
 }
 
-type ValidationError {
-  message: String
+type UpdateUserSuccess {
+  user: User
 }
 
-# Query Paramaters
-input UserConfig {
-  id: Int!
+type DeleteUserSuccess {
+  user: User
+}
+
+type ValidationError {
+  message: String
 }
 
 # Mutation Parameters

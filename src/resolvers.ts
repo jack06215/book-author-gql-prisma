@@ -1,4 +1,4 @@
-import { CreateUserPayload, Resolvers, ResolversParentTypes, User } from './generated/graphql';
+import { CreateUserPayload, Resolvers, ResolversParentTypes, UpdateUserPayload, User } from './generated/graphql';
 import * as LD from 'lodash';
 
 const users = [
@@ -14,7 +14,7 @@ export const resolvers: Resolvers = {
       return users;
     },
     user: async(_, args): Promise<ResolversParentTypes['User'] | null> => {
-      const user = LD.find(users, { id: args.userInput.id });
+      const user = LD.find(users, { id: args.id });
       if (user !== null) {
         console.log(user);
         return <User>{
@@ -35,17 +35,16 @@ export const resolvers: Resolvers = {
         user
       };
     },
-    // createUser: async(_: any, args: any) => {
-    //   const user = args.userInput;
-    //   users.push(user);
-    //   return user;
-    // },
-    // updateUser: async(_: any, args: any) => {
-    //   const updatedUser = args.userInput;
-    //   const updatedUserIndex = users.findIndex((user) => user.id === updatedUser.id);
-    //   users[updatedUserIndex] = updatedUser;
-    //   return updatedUser;
-    // },
+    updateUser: async (_, args): Promise<UpdateUserPayload | null> => {
+      const updatedUser = args.userInput;
+      const updatedUserIndex = users.findIndex((user) => user.id === updatedUser.id);
+      users[updatedUserIndex] = updatedUser;
+      console.log(users[updatedUserIndex]);
+      return <ResolversParentTypes['UpdateUserSuccess']>{
+        __typename: 'UpdateUserSuccess',
+        user: updatedUser
+      };
+    }
     // deleteUser: async(_: any, args: any) => {
     //   const deletedUserId = args.userConfig.id;
     //   const deletedUserIndex = users.findIndex((user) => user.id === deletedUserId);
