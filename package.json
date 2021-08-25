@@ -1,0 +1,37 @@
+{
+  "name": "book-author-gql-prisma",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "gen": "graphql-codegen --config codegen.yml"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jack06215/book-author-gql-prisma.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jack06215/book-author-gql-prisma/issues"
+  },
+  "homepage": "https://github.com/jack06215/book-author-gql-prisma#readme",
+  "devDependencies": {
+    "@graphql-codegen/cli": "2.1.1",
+    "@graphql-codegen/typescript": "2.1.1",
+    "@graphql-codegen/typescript-resolvers": "2.1.1",
+    "@graphql-codegen/visitor-plugin-common": "^2.1.1",
+    "@types/lodash": "^4.14.172",
+    "@types/node": "^16.7.1",
+    "@types/ramda": "^0.27.44",
+    "apollo-server": "^3.1.2",
+    "graphql": "^15.5.1",
+    "nodemon": "^2.0.12",
+    "ramda": "^0.27.1",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.3.5"
+  }
+}
