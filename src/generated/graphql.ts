@@ -31,6 +31,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createUser?: Maybe<CreateUserPayload>;
   updateUser?: Maybe<UpdateUserPayload>;
+  deleteUser?: Maybe<DeleteUserPayload>;
 };
 
 
@@ -41,6 +42,11 @@ export type MutationCreateUserArgs = {
 
 export type MutationUpdateUserArgs = {
   userInput: UserInput;
+};
+
+
+export type MutationDeleteUserArgs = {
+  id: Scalars['Int'];
 };
 
 export type Query = {
@@ -154,9 +160,9 @@ export type ResolversTypes = {
   DeleteUserPayload: ResolversTypes['DeleteUserSuccess'] | ResolversTypes['ValidationError'];
   DeleteUserSuccess: ResolverTypeWrapper<DeleteUserSuccess>;
   Mutation: ResolverTypeWrapper<{}>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
   UpdateUserPayload: ResolversTypes['UpdateUserSuccess'] | ResolversTypes['ValidationError'];
   UpdateUserSuccess: ResolverTypeWrapper<UpdateUserSuccess>;
   User: ResolverTypeWrapper<User>;
@@ -172,9 +178,9 @@ export type ResolversParentTypes = {
   DeleteUserPayload: ResolversParentTypes['DeleteUserSuccess'] | ResolversParentTypes['ValidationError'];
   DeleteUserSuccess: DeleteUserSuccess;
   Mutation: {};
+  Int: Scalars['Int'];
   Query: {};
   String: Scalars['String'];
-  Int: Scalars['Int'];
   UpdateUserPayload: ResolversParentTypes['UpdateUserSuccess'] | ResolversParentTypes['ValidationError'];
   UpdateUserSuccess: UpdateUserSuccess;
   User: User;
@@ -204,6 +210,7 @@ export type DeleteUserSuccessResolvers<ContextType = any, ParentType extends Res
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createUser?: Resolver<Maybe<ResolversTypes['CreateUserPayload']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'userInput'>>;
   updateUser?: Resolver<Maybe<ResolversTypes['UpdateUserPayload']>, ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'userInput'>>;
+  deleteUser?: Resolver<Maybe<ResolversTypes['DeleteUserPayload']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'id'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {

@@ -1,4 +1,11 @@
-import { CreateUserPayload, Resolvers, ResolversParentTypes, UpdateUserPayload, User } from './generated/graphql';
+import { 
+  CreateUserPayload, 
+  Resolvers, 
+  ResolversParentTypes, 
+  UpdateUserPayload, 
+  DeleteUserPayload, 
+  User 
+} from './generated/graphql';
 import * as LD from 'lodash';
 
 const users = [
@@ -44,13 +51,16 @@ export const resolvers: Resolvers = {
         __typename: 'UpdateUserSuccess',
         user: updatedUser
       };
+    },
+    deleteUser: async (_, args): Promise<DeleteUserPayload | null> => {
+      const deletedUserId = args.id;
+      const deletedUserIndex = users.findIndex((user) => user.id === deletedUserId);
+      const deletedUser = users.find((_, i) => i === deletedUserIndex);
+      users.splice(deletedUserIndex, 1);
+      return <ResolversParentTypes['DeleteUserSuccess']>{
+        __typename: 'DeleteUserSuccess',
+        user: deletedUser
+      };
     }
-    // deleteUser: async(_: any, args: any) => {
-    //   const deletedUserId = args.userConfig.id;
-    //   const deletedUserIndex = users.findIndex((user) => user.id === deletedUserId);
-    //   const deletedUser = users.find((_, i) => i === deletedUserIndex);
-    //   users.splice(deletedUserIndex, 1);
-    //   return deletedUser;
-    // },
   }
 }

@@ -8,7 +8,7 @@ type Query {
 type Mutation {
   createUser(userInput: UserInput!): CreateUserPayload
   updateUser(userInput: UserInput!): UpdateUserPayload
-  # deleteUser(userConfig: UserConfig): DeleteUserPayload
+  deleteUser(id: Int!): DeleteUserPayload
 }
 
 # Data Schema
