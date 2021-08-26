@@ -7,18 +7,14 @@ import {
   User 
 } from './generated/graphql';
 import * as LD from 'lodash';
+import { users } from './database';
 
-const users = [
-  { id: 1, name: 'Jack Cho', age: 30, }, 
-  { id: 2, name: 'John Smith', age: 999, },
-  { id: 3, name: 'Jason', age: 20 },
-]
 
 export const resolvers: Resolvers = {
   Query: {
     helloworld: () => "Hello GraphQL in TypeScript",
-    users: async() => {
-      return users;
+    users: async(_, __, context): Promise<Array<ResolversParentTypes['User'] | null>> => {
+      return await context.prisma.user.findMany();
     },
     user: async(_, args): Promise<ResolversParentTypes['User'] | null> => {
       const user = LD.find(users, { id: args.id });
@@ -34,9 +30,16 @@ export const resolvers: Resolvers = {
     }
   },
   Mutation: {
-    createUser: async (_, args): Promise<CreateUserPayload | null> => {
+    createUser: async (_, args, context): Promise<CreateUserPayload | null> => {
       const user = args.userInput;
-      users.push(user);
+      const newUser = await context.prisma.user.create({
+        data: {
+          id: user.id,
+          name: user.name,
+          age: user.age,
+        },
+      })
+      console.log(newUser);
       return <ResolversParentTypes['CreateUserSuccess']>{ 
         __typename: 'CreateUserSuccess',
         user

@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { Context } from '../context';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
@@ -86,7 +87,8 @@ export type ValidationError = {
   message?: Maybe<Scalars['String']>;
 };
 
-
+export type WithIndex<TObject> = TObject & Record<string, any>;
+export type ResolversObject<TObject> = WithIndex<TObject>;
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
@@ -154,7 +156,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 ) => TResult | Promise<TResult>;
 
 /** Mapping between all available schema types and the resolvers types */
-export type ResolversTypes = {
+export type ResolversTypes = ResolversObject<{
   CreateUserPayload: ResolversTypes['CreateUserSuccess'] | ResolversTypes['ValidationError'];
   CreateUserSuccess: ResolverTypeWrapper<CreateUserSuccess>;
   DeleteUserPayload: ResolversTypes['DeleteUserSuccess'] | ResolversTypes['ValidationError'];
@@ -169,10 +171,10 @@ export type ResolversTypes = {
   UserInput: UserInput;
   ValidationError: ResolverTypeWrapper<ValidationError>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
-};
+}>;
 
 /** Mapping between all available schema types and the resolvers parents */
-export type ResolversParentTypes = {
+export type ResolversParentTypes = ResolversObject<{
   CreateUserPayload: ResolversParentTypes['CreateUserSuccess'] | ResolversParentTypes['ValidationError'];
   CreateUserSuccess: CreateUserSuccess;
   DeleteUserPayload: ResolversParentTypes['DeleteUserSuccess'] | ResolversParentTypes['ValidationError'];
@@ -187,60 +189,60 @@ export type ResolversParentTypes = {
   UserInput: UserInput;
   ValidationError: ValidationError;
   Boolean: Scalars['Boolean'];
-};
+}>;
 
-export type CreateUserPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateUserPayload'] = ResolversParentTypes['CreateUserPayload']> = {
+export type CreateUserPayloadResolvers<ContextType = Context, ParentType extends ResolversParentTypes['CreateUserPayload'] = ResolversParentTypes['CreateUserPayload']> = ResolversObject<{
   __resolveType: TypeResolveFn<'CreateUserSuccess' | 'ValidationError', ParentType, ContextType>;
-};
+}>;
 
-export type CreateUserSuccessResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateUserSuccess'] = ResolversParentTypes['CreateUserSuccess']> = {
+export type CreateUserSuccessResolvers<ContextType = Context, ParentType extends ResolversParentTypes['CreateUserSuccess'] = ResolversParentTypes['CreateUserSuccess']> = ResolversObject<{
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
-export type DeleteUserPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeleteUserPayload'] = ResolversParentTypes['DeleteUserPayload']> = {
+export type DeleteUserPayloadResolvers<ContextType = Context, ParentType extends ResolversParentTypes['DeleteUserPayload'] = ResolversParentTypes['DeleteUserPayload']> = ResolversObject<{
   __resolveType: TypeResolveFn<'DeleteUserSuccess' | 'ValidationError', ParentType, ContextType>;
-};
+}>;
 
-export type DeleteUserSuccessResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeleteUserSuccess'] = ResolversParentTypes['DeleteUserSuccess']> = {
+export type DeleteUserSuccessResolvers<ContextType = Context, ParentType extends ResolversParentTypes['DeleteUserSuccess'] = ResolversParentTypes['DeleteUserSuccess']> = ResolversObject<{
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
-export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   createUser?: Resolver<Maybe<ResolversTypes['CreateUserPayload']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'userInput'>>;
   updateUser?: Resolver<Maybe<ResolversTypes['UpdateUserPayload']>, ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'userInput'>>;
   deleteUser?: Resolver<Maybe<ResolversTypes['DeleteUserPayload']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'id'>>;
-};
+}>;
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   helloworld?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   users?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
-};
+}>;
 
-export type UpdateUserPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateUserPayload'] = ResolversParentTypes['UpdateUserPayload']> = {
+export type UpdateUserPayloadResolvers<ContextType = Context, ParentType extends ResolversParentTypes['UpdateUserPayload'] = ResolversParentTypes['UpdateUserPayload']> = ResolversObject<{
   __resolveType: TypeResolveFn<'UpdateUserSuccess' | 'ValidationError', ParentType, ContextType>;
-};
+}>;
 
-export type UpdateUserSuccessResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateUserSuccess'] = ResolversParentTypes['UpdateUserSuccess']> = {
+export type UpdateUserSuccessResolvers<ContextType = Context, ParentType extends ResolversParentTypes['UpdateUserSuccess'] = ResolversParentTypes['UpdateUserSuccess']> = ResolversObject<{
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
-export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   age?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
-export type ValidationErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['ValidationError'] = ResolversParentTypes['ValidationError']> = {
+export type ValidationErrorResolvers<ContextType = Context, ParentType extends ResolversParentTypes['ValidationError'] = ResolversParentTypes['ValidationError']> = ResolversObject<{
   message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
-export type Resolvers<ContextType = any> = {
+export type Resolvers<ContextType = Context> = ResolversObject<{
   CreateUserPayload?: CreateUserPayloadResolvers<ContextType>;
   CreateUserSuccess?: CreateUserSuccessResolvers<ContextType>;
   DeleteUserPayload?: DeleteUserPayloadResolvers<ContextType>;
@@ -251,5 +253,5 @@ export type Resolvers<ContextType = any> = {
   UpdateUserSuccess?: UpdateUserSuccessResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   ValidationError?: ValidationErrorResolvers<ContextType>;
-};
+}>;
 
