@@ -46,7 +46,9 @@ export const resolvers: Resolvers = {
       const updatedUser = args.userInput;
       const updatedUserIndex = users.findIndex((user) => user.id === updatedUser.id);
       users[updatedUserIndex] = updatedUser;
-      console.log(users[updatedUserIndex]);
+      
+      console.log(updatedUser);
+      
       return <ResolversParentTypes['UpdateUserSuccess']>{
         __typename: 'UpdateUserSuccess',
         user: updatedUser
