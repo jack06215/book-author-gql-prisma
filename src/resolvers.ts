@@ -8,10 +8,10 @@ export const resolvers = {
   Query: {
     helloworld: () => "Hello GraphQL in TypeScript",
     // 一般來說 resolvers 會有 4 個參數
-    //   parent: any 
-    //   args: any 
-    //   context: any 
-    //   info: any
+    //   parent 
+    //   args 
+    //   context 
+    //   info
     users: async() => {
       return users;
     },
