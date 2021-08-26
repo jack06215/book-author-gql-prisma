@@ -8,13 +8,15 @@ export const resolvers = {
   Query: {
     helloworld: () => "Hello GraphQL in TypeScript",
     // 一般來說 resolvers 會有 4 個參數
-    // parent: any, args: any, context: any, info: any
+    //   parent: any 
+    //   args: any 
+    //   context: any 
+    //   info: any
     users: async() => {
       return users;
     },
     user: async(_: any, args: any) => {
-      const user = users.find(u => u.id === args.userInput.id);
-      console.log(user);
+      const user = users.find(u => u.id === args.id);
       return user;
     }
   },
@@ -31,7 +33,7 @@ export const resolvers = {
       return updatedUser;
     },
     deleteUser: async(_: any, args: any) => {
-      const deletedUserId = args.userConfig.id;
+      const deletedUserId = args.id;
       const deletedUserIndex = users.findIndex((user) => user.id === deletedUserId);
       const deletedUser = users.find((_, i) => i === deletedUserIndex);
       users.splice(deletedUserIndex, 1);

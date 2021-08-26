@@ -2,13 +2,13 @@
 type Query {
   helloworld: String
   users: [User]
-  user(userInput: UserConfig!): User
+  user(id: Int!): User
 }
 
 type Mutation {
-  createUser(userInput: UserInput!): CreateUserPayload
-  updateUser(userInput: UserInput): User
-  deleteUser(userConfig: UserConfig): User
+  createUser(userInput: UserInput!): User
+  updateUser(userInput: UserInput!): User
+  deleteUser(id: Int!): User
 }
 
 # Data Schema
@@ -18,9 +18,6 @@ type User {
   age: Int
 }
 
-# Payload Definition
-union CreateUserPayload = CreateUserSuccess | ValidationError
-
 # Return State Definition
 type CreateUserSuccess {
   user: User
@@ -28,11 +25,6 @@ type CreateUserSuccess {
 
 type ValidationError {
   message: String
-}
-
-# Query Paramaters
-input UserConfig {
-  id: Int!
 }
 
 # Mutation Parameters
