@@ -6,23 +6,32 @@ import {
   DeleteUserPayload, 
   User 
 } from './generated/graphql';
-import * as LD from 'lodash';
 import { users } from './database';
 
 
 export const resolvers: Resolvers = {
   Query: {
     helloworld: () => "Hello GraphQL in TypeScript",
-    users: async(_, __, context): Promise<Array<ResolversParentTypes['User'] | null>> => {
-      return await context.prisma.user.findMany();
+    users: async(_, args, context): Promise<Array<ResolversParentTypes['User'] | null>> => {
+      const ids = args.ids;
+      return await context.prisma.user.findMany({
+        where: {
+          id: { 
+            in: ids
+          }
+        }
+      });
     },
-    user: async(_, args): Promise<ResolversParentTypes['User'] | null> => {
-      const user = LD.find(users, { id: args.id });
+    user: async(_, args, context): Promise<ResolversParentTypes['User'] | null> => {
+      const user = await context.prisma.user.findUnique(
+        { 
+          where: { 
+            id: args.id 
+          } 
+      });
       if (user !== null) {
         console.log(user);
-        return <User>{
-          ...user
-        };
+        return <User>{ ...user };
       } 
       else {
         return null;
@@ -30,32 +39,38 @@ export const resolvers: Resolvers = {
     }
   },
   Mutation: {
-    createUser: async (_, args, context): Promise<CreateUserPayload | null> => {
-      const user = args.userInput;
+    createUser: async (_, args, context): Promise<CreateUserPayload> => {
       const newUser = await context.prisma.user.create({
         data: {
-          id: user.id,
-          name: user.name,
-          age: user.age,
+          name: args.name,
+          age: args.age,
         },
       })
       console.log(newUser);
       return <ResolversParentTypes['CreateUserSuccess']>{ 
         __typename: 'CreateUserSuccess',
-        user
+        newUser
       };
     },
-    updateUser: async (_, args): Promise<UpdateUserPayload | null> => {
-      const updatedUser = args.userInput;
-      const updatedUserIndex = users.findIndex((user) => user.id === updatedUser.id);
-      users[updatedUserIndex] = updatedUser;
-      
-      console.log(updatedUser);
-      
-      return <ResolversParentTypes['UpdateUserSuccess']>{
-        __typename: 'UpdateUserSuccess',
-        user: updatedUser
-      };
+    updateUser: async (_, args, context): Promise<UpdateUserPayload | null> => {
+      await context.prisma.user.update({
+        where: {
+          id: args.userInput.id
+        },
+        data: {
+          name: args.userInput.name,
+          age: args.userInput.age
+        }
+      }).then(
+        updatedUser =>{
+          console.log(updatedUser);
+          return <ResolversParentTypes['UpdateUserSuccess']>{
+            __typename: 'UpdateUserSuccess',
+            user: updatedUser
+          }
+        }
+      );
+      return null;
     },
     deleteUser: async (_, args): Promise<DeleteUserPayload | null> => {
       const deletedUserId = args.id;

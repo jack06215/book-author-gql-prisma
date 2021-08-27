@@ -5,7 +5,18 @@ import { resolvers } from './resolvers'
 import { PrismaClient } from '@prisma/client';
 import { users } from './database';
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  log: [
+    {
+      emit: "event",
+      level: "query",
+    },
+  ],
+});
+
+prisma.$on("query", async (e) => {
+  console.log(`${e.query} ${e.params}`)
+});
 
 async function main(){
   await prisma.user.deleteMany();
@@ -43,7 +54,3 @@ main().catch((e) => {
   .finally(async () => {
     await prisma.$disconnect();
   });
-
-
-
-

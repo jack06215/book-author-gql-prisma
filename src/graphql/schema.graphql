@@ -1,19 +1,18 @@
 # Operation
 type Query {
   helloworld: String
-  users: [User]!
+  users(ids: [Int!]!): [User]!
   user(id: Int!): User
 }
 
 type Mutation {
-  createUser(userInput: UserInput!): CreateUserPayload
+  createUser(name: String!, age: Int!): CreateUserPayload
   updateUser(userInput: UserInput!): UpdateUserPayload
   deleteUser(id: Int!): DeleteUserPayload
 }
 
 # Data Schema
 type User {
-  id: Int!
   name: String!
   age: Int!
 }

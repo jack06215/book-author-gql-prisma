@@ -37,7 +37,8 @@ export type Mutation = {
 
 
 export type MutationCreateUserArgs = {
-  userInput: UserInput;
+  name: Scalars['String'];
+  age: Scalars['Int'];
 };
 
 
@@ -58,6 +59,11 @@ export type Query = {
 };
 
 
+export type QueryUsersArgs = {
+  ids: Array<Scalars['Int']>;
+};
+
+
 export type QueryUserArgs = {
   id: Scalars['Int'];
 };
@@ -71,7 +77,6 @@ export type UpdateUserSuccess = {
 
 export type User = {
   __typename?: 'User';
-  id: Scalars['Int'];
   name: Scalars['String'];
   age: Scalars['Int'];
 };
@@ -162,9 +167,9 @@ export type ResolversTypes = ResolversObject<{
   DeleteUserPayload: ResolversTypes['DeleteUserSuccess'] | ResolversTypes['ValidationError'];
   DeleteUserSuccess: ResolverTypeWrapper<DeleteUserSuccess>;
   Mutation: ResolverTypeWrapper<{}>;
+  String: ResolverTypeWrapper<Scalars['String']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Query: ResolverTypeWrapper<{}>;
-  String: ResolverTypeWrapper<Scalars['String']>;
   UpdateUserPayload: ResolversTypes['UpdateUserSuccess'] | ResolversTypes['ValidationError'];
   UpdateUserSuccess: ResolverTypeWrapper<UpdateUserSuccess>;
   User: ResolverTypeWrapper<User>;
@@ -180,9 +185,9 @@ export type ResolversParentTypes = ResolversObject<{
   DeleteUserPayload: ResolversParentTypes['DeleteUserSuccess'] | ResolversParentTypes['ValidationError'];
   DeleteUserSuccess: DeleteUserSuccess;
   Mutation: {};
+  String: Scalars['String'];
   Int: Scalars['Int'];
   Query: {};
-  String: Scalars['String'];
   UpdateUserPayload: ResolversParentTypes['UpdateUserSuccess'] | ResolversParentTypes['ValidationError'];
   UpdateUserSuccess: UpdateUserSuccess;
   User: User;
@@ -210,14 +215,14 @@ export type DeleteUserSuccessResolvers<ContextType = Context, ParentType extends
 }>;
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  createUser?: Resolver<Maybe<ResolversTypes['CreateUserPayload']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'userInput'>>;
+  createUser?: Resolver<Maybe<ResolversTypes['CreateUserPayload']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'name' | 'age'>>;
   updateUser?: Resolver<Maybe<ResolversTypes['UpdateUserPayload']>, ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'userInput'>>;
   deleteUser?: Resolver<Maybe<ResolversTypes['DeleteUserPayload']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'id'>>;
 }>;
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   helloworld?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  users?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType>;
+  users?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType, RequireFields<QueryUsersArgs, 'ids'>>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
 }>;
 
@@ -231,7 +236,6 @@ export type UpdateUserSuccessResolvers<ContextType = Context, ParentType extends
 }>;
 
 export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   age?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
