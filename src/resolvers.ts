@@ -6,8 +6,6 @@ import {
   DeleteUserPayload, 
   User 
 } from './generated/graphql';
-import { users } from './database';
-
 
 export const resolvers: Resolvers = {
   Query: {
@@ -72,11 +70,12 @@ export const resolvers: Resolvers = {
       );
       return null;
     },
-    deleteUser: async (_, args): Promise<DeleteUserPayload | null> => {
-      const deletedUserId = args.id;
-      const deletedUserIndex = users.findIndex((user) => user.id === deletedUserId);
-      const deletedUser = users.find((_, i) => i === deletedUserIndex);
-      users.splice(deletedUserIndex, 1);
+    deleteUser: async (_, args, context): Promise<DeleteUserPayload | null> => {
+      const deletedUser = await context.prisma.user.delete({
+        where: {
+          id: args.id
+        }
+      });
       return <ResolversParentTypes['DeleteUserSuccess']>{
         __typename: 'DeleteUserSuccess',
         user: deletedUser

@@ -19,16 +19,19 @@ prisma.$on("query", async (e) => {
 });
 
 async function main(){
+  // Setup some data
   await prisma.user.deleteMany();
-  for (let i = 0; i < users.length; i++) {
-    await prisma.user.create({
-      data:{
-        id: users[i].id,
-        name: users[i].name,
-        age: users[i].age
-      }
-    });
-  }
+  users.map(
+    async user => {
+      await prisma.user.create({
+        data: {
+          id: user.id,
+          name: user.name,
+          age: user.age
+        }
+      });
+    }
+  );
 
   const server = new ApolloServer({
     typeDefs: fs.readFileSync(
