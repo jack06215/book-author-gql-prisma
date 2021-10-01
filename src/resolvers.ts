@@ -1,10 +1,10 @@
+import { isError } from 'lodash';
 import { 
   CreateUserPayload, 
   Resolvers, 
   ResolversParentTypes, 
   UpdateUserPayload, 
   DeleteUserPayload, 
-  User 
 } from './generated/graphql';
 
 export const resolvers: Resolvers = {
@@ -12,28 +12,24 @@ export const resolvers: Resolvers = {
     helloworld: () => "Hello GraphQL in TypeScript",
     users: async(_, args, context): Promise<Array<ResolversParentTypes['User'] | null>> => {
       const ids = args.ids;
-      return await context.prisma.user.findMany({
+      return context.prisma.user.findMany({
         where: {
-          id: { 
+          id: {
             in: ids
           }
         }
-      });
+      }).then(users => (
+        users.map( user => (isError(user) ? null : user) )
+      ));
     },
     user: async(_, args, context): Promise<ResolversParentTypes['User'] | null> => {
-      const user = await context.prisma.user.findUnique(
-        { 
-          where: { 
-            id: args.id 
-          } 
-      });
-      if (user !== null) {
-        console.log(user);
-        return <User>{ ...user };
-      } 
-      else {
-        return null;
-      }
+      return context.prisma.user.findUnique({
+        where: {
+          id: args.id
+        }
+      }).then(
+        user => isError(user) ? null : user
+      );
     }
   },
   Mutation: {
@@ -42,6 +38,7 @@ export const resolvers: Resolvers = {
         data: {
           name: args.name,
           age: args.age,
+          createdAt: new Date(),
         },
       })
       console.log(newUser);
@@ -57,7 +54,8 @@ export const resolvers: Resolvers = {
         },
         data: {
           name: args.userInput.name,
-          age: args.userInput.age
+          age: args.userInput.age,
+          updatedAt: new Date(),
         }
       }).then(
         updatedUser =>{

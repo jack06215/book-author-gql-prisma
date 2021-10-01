@@ -27,7 +27,8 @@ async function main(){
         data: {
           id: user.id,
           name: user.name,
-          age: user.age
+          age: user.age,
+          createdAt: new Date(),
         }
       });
     }

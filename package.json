@@ -6,7 +6,9 @@
   "scripts": {
     "start": "nodemon src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "gen": "graphql-codegen --config codegen.yml"
+    "gen_gql": "graphql-codegen --config codegen.yml",
+    "gen_prisma": "yarn prisma generate",
+    "migrate": "yarn prisma migrate dev"
   },
   "repository": {
     "type": "git",
