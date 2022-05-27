@@ -4,6 +4,7 @@ import { ApolloServer } from 'apollo-server';
 import { resolvers } from './resolvers'
 import { PrismaClient } from '@prisma/client';
 import { users } from './database';
+// import { resetDatabase } from './utils';
 
 const prisma = new PrismaClient({
   log: [
@@ -20,6 +21,7 @@ prisma.$on("query", async (e) => {
 
 async function main(){
   // Setup some data
+  // await resetDatabase();
   await prisma.user.deleteMany();
   users.map(
     async user => {
